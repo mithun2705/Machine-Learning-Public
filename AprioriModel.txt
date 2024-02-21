@@ -1,0 +1,44 @@
+Installing Packages
+
+!pip install apyori,
+
+# Importing The Libraries
+	
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Importing Dataset & Data Preprocessing
+
+df = pd.read_csv('dataset.csv',header=None)
+transactions = []
+for i in range(0,7501):
+     transactions.append([str(df.values[i,j) for j in range(0,20)])	
+
+# Training the Apriori Model on the datasets
+
+from apyori import apriori 
+rules = apriori(transactions = transactions, min_support = .003, min_confidence = 0.2, min_lift = 3, min_length=2, max_length=2)
+
+# Display the first results coming directly from the output of apriori
+
+results = list(rules)
+results
+
+# Putting the data in Pandas Dataframe
+
+def inspect(results):
+lhs = [tuple(result[2][0][0])[0] for result in results]
+rhs = [tuple(result[2][0][1])[0] for result in results]
+supports = [result[1] for result in results]
+confidences = [results[2][0][2] for result in results]
+lifts = [results[2][0][3] for result in results]
+return list(zip(lhs,rhs,supports,confidences,lifts))
+df1 = pd.DataFrame(inspect(results), columns=['Left Hand Side','Right Hand Side','Support','Confidence','Lift']
+
+# displaying the result
+df1
+
+# Shorthing the Dataset in decsending order
+
+df1.nlargest(n = 10, columns = 'lift')
